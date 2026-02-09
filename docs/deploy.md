@@ -62,6 +62,7 @@ Deploy. Your API should be available at:
 - Import the same GitHub repo in Netlify
 - Netlify will use `netlify.toml`:
   - publish directory: `frontend/`
+  - build command: none (static files)
   - SPA fallback redirect to `/index.html`
   - proxy redirect: `/api/v1/*` → `https://truecheck-api.vercel.app/api/v1/*`
 
