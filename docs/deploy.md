@@ -1,11 +1,9 @@
-# Deploy (Vercel API + Netlify Web)
+# Deploy (Simple)
 
-This repo is set up to deploy:
+This repo is designed to deploy cleanly to most platforms:
 
-- **Backend API** (FastAPI) to **Vercel** as a Python Serverless Function
-- **Frontend** (static HTML/CSS/JS) to **Netlify**
-
-The frontend calls `/api/v1/...` on the same origin, and Netlify proxies that to your Vercel API.
+- **Backend API** (FastAPI) to any Python hosting/PaaS (Render/Railway/Fly/Heroku-like)
+- **Frontend** (static HTML/CSS/JS) to any static host (Netlify recommended)
 
 ## 1) Push to GitHub
 
@@ -33,16 +31,11 @@ git push -u origin main
 Important:
 - Do **not** commit secrets. `backend/.env` is ignored by `.gitignore`.
 
-## 2) Deploy backend to Vercel
+## 2) Deploy backend API (any platform)
 
-### A) Create Vercel project
+Deploy the `backend/` folder as a Python web service. A `backend/Procfile` is included for platforms that support it.
 
-- Import the GitHub repo in Vercel
-- Choose **Project Name**: `truecheck-api` (so Netlify proxy works without edits)
-
-### B) Set Environment Variables (Vercel Project Settings → Environment Variables)
-
-Set these values in Vercel (do not commit them):
+Set these environment variables in your hosting platform (do not commit them):
 
 - `GOOGLE_CSE_API_KEY` = your Google Custom Search API key
 - `GOOGLE_CSE_ENGINE_ID` = your Programmable Search Engine ID
@@ -53,9 +46,9 @@ Server behavior:
 - `TRUECHECK_USE_QUEUE` = `0` (recommended on serverless)
 - `TRUECHECK_CORS_ORIGINS` = `https://<your-netlify-site>.netlify.app`
 
-Deploy. Your API should be available at:
+Your API should be available at:
 
-- `https://truecheck-api.vercel.app/api/v1/health`
+- `https://<your-api-host>/api/v1/health`
 
 ## 3) Deploy frontend to Netlify
 
@@ -64,7 +57,6 @@ Deploy. Your API should be available at:
   - publish directory: `frontend/`
   - build command: none (static files)
   - SPA fallback redirect to `/index.html`
-  - proxy redirect: `/api/v1/*` → `https://truecheck-api.vercel.app/api/v1/*`
 
 Deploy.
 
@@ -77,10 +69,10 @@ Deploy.
   - Thumbnails appear when Google returns them
   - Each claim shows a per-claim rationale when Gemini is configured
 
-## If you did NOT name the Vercel project `truecheck-api`
+## Connecting frontend → backend
 
-Edit `netlify.toml` and replace:
+By default, the frontend assumes the API is on **the same origin** at `/api/v1` in production.
 
-- `https://truecheck-api.vercel.app` → `https://<your-vercel-project>.vercel.app`
-
-Then push and redeploy Netlify.
+Options:
+- If you want the frontend to call your backend directly, update `frontend/app.js` (or set up an API proxy via your host).
+- If you want a same-origin experience on Netlify, add a Netlify redirect that proxies `/api/v1/*` to your API host.

@@ -3,12 +3,6 @@
   command = "echo 'No build step (static frontend)'"
 
 [[redirects]]
-  from = "/api/v1/*"
-  to = "https://truecheck-api.vercel.app/api/v1/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
