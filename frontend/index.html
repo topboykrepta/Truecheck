@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TrueCheck</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1 class="brand">TrueCheck</h1>
+      <p class="subtitle">Misinformation, disinformation, and AI-generated content detection</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="text" role="tab">Text</button>
+        <button class="tab" data-tab="image" role="tab">Image</button>
+        <button class="tab" data-tab="audio" role="tab">Audio</button>
+      </div>
+
+      <div class="panel active" data-panel="text">
+        <label class="label">Paste text</label>
+        <textarea id="textInput" class="textarea" placeholder="Paste text to fact-check..."></textarea>
+        <div class="actions">
+          <button id="analyzeTextBtn" class="btn primary">Analyze</button>
+        </div>
+      </div>
+
+      <div class="panel" data-panel="image">
+        <label class="label">Upload image (jpg/png/webp)</label>
+        <input id="imageFile" type="file" accept="image/jpeg,image/png,image/webp" />
+        <div class="actions">
+          <button id="analyzeImageBtn" class="btn primary">Analyze</button>
+        </div>
+      </div>
+
+      <div class="panel" data-panel="audio">
+        <label class="label">Upload audio (mp3/wav/m4a)</label>
+        <input id="audioFile" type="file" accept="audio/mpeg,audio/wav,audio/mp4,audio/x-m4a" />
+        <div class="actions">
+          <button id="analyzeAudioBtn" class="btn primary">Analyze</button>
+        </div>
+      </div>
+
+      <div id="status" class="status" aria-live="polite"></div>
+    </section>
+
+    <section id="report" class="report hidden">
+      <div class="grid">
+        <article class="card">
+          <h2 class="h2">Summary</h2>
+          <div class="summary">
+            <div>
+              <div class="badge" id="verdictBadge">—</div>
+              <div class="meta">Confidence: <span id="confidence">—</span></div>
+              <div class="meta">AI likelihood: <span id="aiLikelihood">—</span></div>
+            </div>
+            <p id="explanation" class="explanation">—</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2 class="h2">Key Claims</h2>
+          <div class="tableWrap">
+            <table class="table" id="claimsTable">
+              <thead>
+                <tr>
+                  <th>Claim</th>
+                  <th>Status</th>
+                  <th>Confidence</th>
+                  <th>Top citations</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2 class="h2">Evidence Gallery</h2>
+          <h3 class="h3">Trusted sources</h3>
+          <div id="trustedSources" class="list"></div>
+          <h3 class="h3">Web extracts</h3>
+          <div id="webExtracts" class="list"></div>
+          <h3 class="h3">Image matches</h3>
+          <div id="imageMatches" class="list"></div>
+        </article>
+
+        <article class="card">
+          <h2 class="h2">Origin Tracing</h2>
+          <div class="kv">
+            <div><span class="k">Most likely origin URL(s)</span><div id="originUrls" class="v">—</div></div>
+            <div><span class="k">Earliest appearance</span><div id="earliest" class="v">—</div></div>
+          </div>
+          <h3 class="h3">Timeline</h3>
+          <div id="timeline" class="list"></div>
+        </article>
+
+        <article class="card">
+          <h2 class="h2">Limitations</h2>
+          <ul id="limitations" class="bullets"></ul>
+          <p class="disclaimer">TrueCheck provides assistance, not absolute authority. Always verify with primary sources.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Audit Log</h2>
+      <p class="small">Shows what searches were run and which integrations were used.</p>
+      <div class="actions">
+        <button id="loadAuditBtn" class="btn">Load audit for current report</button>
+      </div>
+      <pre id="audit" class="pre"></pre>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
